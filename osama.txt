@@ -1,26 +1,52 @@
+void frame_for_image(Image& image) 
 {
-  "version": "0.2.0",
-  "configurations": [
+    Image new_image(image.width + 15, image.height + 15);
+
+    for (int i = 0; i < new_image.width; ++i)
     {
-      "name": "Debug C++",
-      "type": "cppdbg",
-      "request": "launch",
-      "program": "${workspaceFolder}/osmarn.exe",
-      "args": [],
-      "stopAtEntry": false,
-      "cwd": "${workspaceFolder}",
-      "environment": [],
-      "externalConsole": true,
-      "MIMode": "gdb",
-      "setupCommands": [
+        for (int j = 0; j < new_image.height; ++j)
         {
-          "description": "Enable pretty-printing for gdb",
-          "text": "-enable-pretty-printing",
-          "ignoreFailures": true
+            for (int k = 0; k < 3; ++k)
+            {
+                if (k == 2) new_image(i, j, k) = 255;
+                else new_image(i, j, k) = 0;
+            }
         }
-      ],
-      "preLaunchTask": "build",
-      "miDebuggerPath": "gdb"
     }
-  ]
+
+    for (int i = 15; i < image.width; i++)
+    {
+        for (int j = 15; j < image.height; j++)
+        {
+            for (int k = 0; k < 3; k++)
+            {
+                new_image(i, j, k) = image(i - 15, j - 15, k);
+            }
+        }
+    }
+
+    for (int j = 15; j < 21; j += 5)
+    {
+        for (int i = j; i < new_image.width - j; i++)
+        {
+            for (int k = 0; k < 3; k++) new_image(i, j, k) = 255;
+        }
+
+        for (int i = j; i < new_image.height - j; i++)
+        {
+            for (int k = 0; k < 3; k++) new_image(j, i, k) = 255;
+        }
+
+        for (int i = j; i < new_image.height - j; i++)
+        {
+            for (int k = 0; k < 3; k++) new_image(new_image.width - j, i, k) = 255;
+        }
+
+        for (int i = j; i < new_image.width - j; i++)
+        {
+            for (int k = 0; k < 3; k++) new_image(i, new_image.height - j, k) = 255;
+        }
+    }
+
+    image = new_image;
 }
